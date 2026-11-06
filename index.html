@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><circle cx=%2216%22 cy=%2216%22 r=%2214%22 fill=%22%231f4fd8%22/><text x=%2216%22 y=%2221%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2214%22 font-family=%22sans-serif%22>S</text></svg>"/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><path fill=%22%232F54EB%22 d=%22M16 3 L29 27 H3 Z%22/><path fill=%22white%22 d=%22M16 11 L23 25 H9 Z%22/><path fill=%22%232F54EB%22 d=%22M16 16 L19.2 23 H12.8 Z%22/></svg>"/>
   <title>三一汽金 · AI 智能录单 Demo（全字段版）</title>
   <link rel="stylesheet" href="styles.css"/>
 </head>
@@ -11,67 +11,127 @@
   <!-- 顶栏 -->
   <header class="topbar">
     <div class="logo">
-      <span class="tri">S</span>
-      三一汽金 · 代理商平台
-      <span class="demo-badge">AI 录单 Demo</span>
+      <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <path fill="#2F54EB" d="M16 2 L30 28 H2 Z"/>
+        <path fill="#fff" d="M16 10 L24 26 H8 Z"/>
+        <path fill="#2F54EB" d="M16 16 L20 26 H12 Z"/>
+      </svg>
+      三一汽金
     </div>
-    <span class="tb-item">贷款试算</span>
-    <span class="tb-item">下载中心</span>
-    <span class="tb-item">小程序</span>
     <div class="tb-right">
-      <span class="pill">湖南汽车制造有限责任公司长沙分公司（重卡）</span>
-      <span class="user-name">tiankk</span>
+      <span class="tb-pill">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="2" width="12" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M5 8h6M8 5v6" stroke="currentColor" stroke-width="1.3"/></svg>
+        贷款试算
+      </span>
+      <span class="tb-item">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8M5 7l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M3 13h10" stroke="currentColor" stroke-width="1.3"/></svg>
+        下载中心
+      </span>
+      <span class="tb-item">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="2" width="5" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="2" width="5" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="2" y="9" width="5" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="9" width="5" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+        小程序
+      </span>
+      <span class="tb-org">湖南汽车制造有限责任公司长沙分公司（重卡）
+        <svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 L6 8 L9.5 4.5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+      </span>
+      <span class="user-name">tiankk
+        <svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 L6 8 L9.5 4.5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+      </span>
     </div>
   </header>
 
   <div class="layout">
-    <!-- 左侧导航：订单列表 / 个人客户 / 法人客户 -->
+    <!-- 左侧导航 -->
     <nav class="sidenav" aria-label="主导航">
       <div class="nav-group">
-        <div class="nav-item" data-nav="order">订单 <span class="caret">▾</span></div>
+        <div class="nav-item" data-nav="order">
+          <span class="ni"><svg class="nav-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h8l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M14 3v6h6M8 13h8M8 17h5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>订单</span>
+          <svg class="caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 L6 8 L9.5 4.5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
+        </div>
         <div class="nav-sub active" data-nav="order">订单管理</div>
       </div>
       <div class="nav-group">
-        <div class="nav-item" data-nav="cust">客户/担保 <span class="caret">▾</span></div>
+        <div class="nav-item" data-nav="cust">
+          <span class="ni"><svg class="nav-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 19c.6-3 2.6-4.5 5.5-4.5S14.4 16 15 19" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="17" cy="9" r="2.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M16 14.6c2.2.3 3.8 1.6 4.4 4.4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>客户/担保</span>
+          <svg class="caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 L6 8 L9.5 4.5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
+        </div>
         <div class="nav-sub" data-nav="person">个人客户</div>
         <div class="nav-sub" data-nav="corp">法人客户</div>
         <div class="nav-sub dim" data-nav="">挂靠方</div>
+        <div class="nav-sub dim" data-nav="">经纪人管理</div>
         <div class="nav-sub dim" data-nav="">担保方</div>
       </div>
-      <div class="nav-item dim" data-nav="">回款</div>
-      <div class="nav-item dim" data-nav="">结清</div>
-      <div class="nav-item dim" data-nav="">财务</div>
-      <div class="nav-item dim" data-nav="">用户</div>
+      <div class="nav-item dim" data-nav="">
+        <span class="ni"><svg class="nav-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 10h18" stroke="currentColor" stroke-width="1.6"/></svg>回款</span>
+        <svg class="caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 L6 8 L9.5 4.5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
+      </div>
+      <div class="nav-item dim" data-nav="">
+        <span class="ni"><svg class="nav-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19V9l7-4 7 4v10" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M9 19v-6h6v6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>结清</span>
+        <svg class="caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 L6 8 L9.5 4.5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
+      </div>
+      <div class="nav-item dim" data-nav="">
+        <span class="ni"><svg class="nav-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 10h18M8 15h3" stroke="currentColor" stroke-width="1.6"/></svg>财务</span>
+        <svg class="caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 L6 8 L9.5 4.5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
+      </div>
+      <div class="nav-item dim" data-nav="">
+        <span class="ni"><svg class="nav-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 8v5l3 2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>抵押权证</span>
+        <svg class="caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 L6 8 L9.5 4.5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
+      </div>
+      <div class="nav-item dim" data-nav="">
+        <span class="ni"><svg class="nav-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="18" cy="12" r="1.4" fill="currentColor"/></svg>其它</span>
+        <svg class="caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 L6 8 L9.5 4.5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
+      </div>
+      <div class="nav-item dim" data-nav="">
+        <span class="ni"><svg class="nav-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 11v5M12 8h.01" stroke="currentColor" stroke-width="1.6"/></svg>帮助中心</span>
+      </div>
+      <div class="nav-item dim" data-nav="">
+        <span class="ni"><svg class="nav-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 19c.8-3.2 3.2-5 7-5s6.2 1.8 7 5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>用户</span>
+        <svg class="caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 L6 8 L9.5 4.5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
+      </div>
+      <button type="button" class="sider-toggle" data-toast="侧栏收起（演示）" aria-label="收起侧栏">«</button>
     </nav>
 
     <main class="main" id="main">
+      <div class="page-tabs" id="pageTabs">
+        <button type="button" class="page-tab" data-view="home">首页</button>
+        <button type="button" class="page-tab on" data-view="orderList">订单管理<span class="tab-x" title="关闭">×</span></button>
+        <button type="button" class="page-tab" data-view="wizard">编辑订单<span class="tab-x" title="关闭">×</span></button>
+        <button type="button" class="page-tab" data-view="personList">个人客户<span class="tab-x" title="关闭">×</span></button>
+        <button type="button" class="page-tab" data-view="corpList">法人客户<span class="tab-x" title="关闭">×</span></button>
+      </div>
       <!-- ========= 订单管理列表 ========= -->
       <section id="view-orderList">
-        <div class="crumbs">首页 / <b>订单管理</b></div>
         <div class="card">
           <div class="stat-tabs" id="orderTabs">
-            <span class="stat-tab">全部(3803)</span>
-            <span class="stat-tab on">待处理(212)</span>
-            <span class="stat-tab">已驳回(661)</span>
-            <span class="stat-tab">审批中(1)</span>
-            <span class="stat-tab">面签成功(0)</span>
-            <span class="stat-tab">保证金扣款中(0)</span>
-            <span class="stat-tab">待放款(0)</span>
-            <span class="stat-tab">已放款(2904)</span>
-            <span class="stat-tab">变更中(0)</span>
+            <span class="stat-tab">全部<b>3803</b></span>
+            <span class="stat-tab on">待处理<b>212</b></span>
+            <span class="stat-tab">已驳回<b>661</b></span>
+            <span class="stat-tab">审批中<b>1</b></span>
+            <span class="stat-tab">面签成功<b>0</b></span>
+            <span class="stat-tab">保证金扣款中<b>0</b></span>
+            <span class="stat-tab">待放款<b>0</b></span>
+            <span class="stat-tab">已放款<b>2904</b></span>
+            <span class="stat-tab">变更中<b>0</b></span>
           </div>
-          <div class="list-head">
-            <div class="search-box">
-              <input id="orderSearch" placeholder="订单号/合同号/客户名称/客户手机号/产品名称"/>
-            </div>
-            <div class="toolbar-actions">
-              <button type="button" class="btn" id="orderQueryBtn">查询</button>
-              <button type="button" class="btn" id="orderResetBtn">重置</button>
-              <button type="button" class="btn btn-orange" id="newOrderBtn">＋ 新增订单</button>
+          <div class="search-line">
+            <input class="f-input" id="orderSearch" placeholder="订单号/合同号/客户名称/客户手机号/产品名称"/>
+            <button type="button" class="btn btn-primary" id="orderQueryBtn">查询</button>
+            <button type="button" class="btn" id="orderResetBtn">重置</button>
+            <button type="button" class="expand-filter" data-toast="展开筛选（演示）">展开筛选</button>
+            <div class="toolbar-right">
+              <button type="button" class="btn btn-ghost" data-toast="保函发送详情（演示）">保函发送详情</button>
+              <button type="button" class="btn btn-ghost" data-toast="批量下载放款回单（演示）">批量下载放款回单</button>
+              <button type="button" class="btn btn-orange" id="newOrderBtn">＋ 新建订单</button>
             </div>
           </div>
           <div class="table-wrap">
             <table class="grid" id="orderTable">
+              <colgroup>
+                <col style="width:142px"/><col style="width:96px"/><col style="width:112px"/>
+                <col style="width:72px"/><col style="width:42px"/><col style="width:42px"/>
+                <col style="width:48px"/><col style="width:96px"/><col style="width:52px"/>
+                <col/><col style="width:52px"/><col style="width:228px"/>
+              </colgroup>
               <thead>
                 <tr>
                   <th>订单号</th>
@@ -82,6 +142,7 @@
                   <th>期限</th>
                   <th>挂靠方式</th>
                   <th>挂靠方</th>
+                  <th>还等不还本</th>
                   <th>产品名称</th>
                   <th>订单状态</th>
                   <th>操作</th>
@@ -90,90 +151,130 @@
               <tbody></tbody>
             </table>
           </div>
+          <div class="pager">
+            <span id="orderCount">共 0 条</span>
+            <span class="pager-size">50条/页</span>
+            <button type="button" class="pg on">1</button>
+            <button type="button" class="pg" data-toast="演示数据仅当前页">2</button>
+            <button type="button" class="pg" data-toast="演示数据仅当前页">3</button>
+            <button type="button" class="pg" data-toast="下一页（演示）">›</button>
+          </div>
         </div>
       </section>
 
       <!-- ========= 个人客户列表 ========= -->
       <section id="view-personList" class="hidden">
-        <div class="crumbs">首页 / 客户/担保 / <b>个人客户</b></div>
         <div class="card">
           <div class="stat-tabs" id="personTabs">
-            <span class="stat-tab on">全部(1882)</span>
-            <span class="stat-tab">待授权(1295)</span>
-            <span class="stat-tab">预审中(0)</span>
-            <span class="stat-tab">预审通过(619)</span>
-            <span class="stat-tab">预审拒绝(31)</span>
+            <span class="stat-tab on">全部<b>1882</b></span>
+            <span class="stat-tab">待授权<b>1295</b></span>
+            <span class="stat-tab">预审中<b>0</b></span>
+            <span class="stat-tab">预审通过<b>619</b></span>
+            <span class="stat-tab">预审拒绝<b>31</b></span>
           </div>
-          <div class="list-head">
-            <div class="search-box">
-              <input id="personSearch" placeholder="搜索客户或配偶姓名/身份证/手机号"/>
-            </div>
-            <div class="toolbar-actions">
-              <button type="button" class="btn" id="personQueryBtn">查询</button>
-              <button type="button" class="btn" id="personResetBtn">重置</button>
-              <button type="button" class="btn btn-orange" id="newPersonBtn">＋ 录客户</button>
+          <div class="search-line">
+            <input class="f-input" id="personSearch" placeholder="搜索客户或配偶姓名/身份证/手机号"/>
+            <button type="button" class="btn btn-primary" id="personQueryBtn">查询</button>
+            <button type="button" class="btn" id="personResetBtn">重置</button>
+            <button type="button" class="expand-filter" data-toast="展开筛选（演示）">展开筛选</button>
+            <div class="toolbar-right">
+              <button type="button" class="btn btn-orange" id="newPersonBtn">＋ 新增客户</button>
             </div>
           </div>
           <div class="table-wrap">
             <table class="grid" id="personTable">
+              <colgroup>
+                <col style="width:72px"/><col style="width:130px"/><col style="width:72px"/>
+                <col style="width:64px"/><col style="width:56px"/><col style="width:96px"/>
+                <col style="width:132px"/><col style="width:64px"/><col style="width:72px"/><col/>
+              </colgroup>
               <thead>
                 <tr>
                   <th>客户姓名</th>
                   <th>身份证</th>
                   <th>客户来源</th>
                   <th>婚姻状况</th>
+                  <th>业务员</th>
                   <th>业务类型</th>
                   <th>创建时间</th>
+                  <th>CRM状态</th>
                   <th>汽金状态</th>
+                  <th>操作</th>
                 </tr>
               </thead>
               <tbody></tbody>
             </table>
+          </div>
+          <div class="pager">
+            <span id="personCount">共 0 条</span>
+            <span class="pager-size">50条/页</span>
+            <button type="button" class="pg on">1</button>
+            <button type="button" class="pg" data-toast="演示数据仅当前页">2</button>
+            <button type="button" class="pg" data-toast="下一页（演示）">›</button>
           </div>
         </div>
       </section>
 
       <!-- ========= 法人客户列表 ========= -->
       <section id="view-corpList" class="hidden">
-        <div class="crumbs">首页 / 客户/担保 / <b>法人客户</b></div>
         <div class="card">
           <div class="stat-tabs" id="corpTabs">
-            <span class="stat-tab on">全部(1378)</span>
-            <span class="stat-tab">待授权(1249)</span>
-            <span class="stat-tab">预审通过(189)</span>
-            <span class="stat-tab">预审拒绝(7)</span>
+            <span class="stat-tab on">全部<b>1378</b></span>
+            <span class="stat-tab">待授权<b>1249</b></span>
+            <span class="stat-tab">预审中<b>0</b></span>
+            <span class="stat-tab">预审通过<b>189</b></span>
+            <span class="stat-tab">预审拒绝<b>7</b></span>
+            <span class="stat-tab">预审异常<b>0</b></span>
+            <span class="stat-tab">预审完成<b>0</b></span>
           </div>
-          <div class="list-head">
-            <div class="search-box">
-              <input id="corpSearch" placeholder="搜索企业名称/统一社会信用代码/法人姓名/法人身份证号"/>
-            </div>
-            <div class="toolbar-actions">
-              <button type="button" class="btn" id="corpQueryBtn">查询</button>
-              <button type="button" class="btn" id="corpResetBtn">重置</button>
-              <button type="button" class="btn btn-orange" id="newCorpBtn">＋ 录客户</button>
+          <div class="search-line">
+            <input class="f-input" id="corpSearch" placeholder="搜索企业名称/统一社会信用代码/法人姓名/法人身份证号"/>
+            <button type="button" class="btn btn-primary" id="corpQueryBtn">查询</button>
+            <button type="button" class="btn" id="corpResetBtn">重置</button>
+            <button type="button" class="expand-filter" data-toast="展开筛选（演示）">展开筛选</button>
+            <div class="toolbar-right">
+              <button type="button" class="btn btn-orange" id="newCorpBtn">＋ 新增客户</button>
             </div>
           </div>
           <div class="table-wrap">
             <table class="grid" id="corpTable">
+              <colgroup>
+                <col style="width:150px"/><col style="width:150px"/><col style="width:64px"/>
+                <col style="width:52px"/><col style="width:64px"/><col style="width:88px"/>
+                <col style="width:120px"/><col style="width:48px"/><col style="width:64px"/>
+                <col style="width:72px"/><col/>
+              </colgroup>
               <thead>
                 <tr>
                   <th>客户姓名</th>
                   <th>统一社会信用代码</th>
+                  <th>客户来源</th>
+                  <th>业务员</th>
                   <th>法人姓名</th>
                   <th>业务类型</th>
                   <th>法人身份证号</th>
+                  <th>创建</th>
+                  <th>CRM状态</th>
                   <th>汽金状态</th>
+                  <th>操作</th>
                 </tr>
               </thead>
               <tbody></tbody>
             </table>
+          </div>
+          <div class="pager">
+            <span id="corpCount">共 0 条</span>
+            <span class="pager-size">50条/页</span>
+            <button type="button" class="pg on">1</button>
+            <button type="button" class="pg" data-toast="演示数据仅当前页">2</button>
+            <button type="button" class="pg" data-toast="演示数据仅当前页">3</button>
+            <button type="button" class="pg" data-toast="下一页（演示）">›</button>
           </div>
         </div>
       </section>
 
       <!-- ========= 新增订单（四步向导） ========= -->
       <section id="view-wizard" class="hidden">
-        <div class="crumbs">首页 / 订单管理 / <b>编辑订单</b> <span class="mode-hint">AI 录单模式</span></div>
         <div class="card">
           <div class="steps-bar" id="stepsBar">
             <div class="step-it on"><span class="n">1</span>选择金融产品</div>
@@ -312,8 +413,8 @@
               <div class="r-row">
                 <div class="r-label">客户信息</div>
                 <div class="r-actions">
-                  <button type="button" class="btn btn-primary" data-toast="已按客户名称拉取最新客户信息（演示）">✎ 更新客户信息</button>
-                  <button type="button" class="btn btn-orange" data-toast="关联CRM销售订单（演示）">关联CRM销售订单</button>
+                  <button type="button" class="btn btn-primary" data-toast="已按客户名称拉取最新客户信息（演示）">更新客户信息</button>
+                  <button type="button" class="btn btn-link" data-toast="关联CRM销售订单（演示）">关联CRM销售订单</button>
                 </div>
               </div>
               <div class="r-row" data-field="isBuyer">
@@ -373,16 +474,20 @@
           <!-- 第三步：资产 -->
           <div id="step3" class="hidden">
             <div class="asset-tools">
-              <button type="button" class="btn btn-orange btn-sm" id="addAssetBtn">＋ 添加资产</button>
-              <button type="button" class="btn btn-primary btn-sm" data-toast="批量导入资产（演示）">▦ 批量导入资产</button>
-              <button type="button" class="btn btn-sm" data-toast="下载模板（演示）">下载模板</button>
+              <button type="button" class="btn btn-primary btn-sm" id="addAssetBtn">＋ 添加资产</button>
+              <button type="button" class="btn btn-link btn-sm" data-toast="批量导入资产（演示）">批量导入资产</button>
+              <button type="button" class="btn btn-link btn-sm" data-toast="下载模板（演示）">下载模板</button>
+              <span class="spacer"></span>
+              <button type="button" class="btn btn-ghost btn-sm" data-toast="一键清除资产（演示）">一键清除资产</button>
+              <button type="button" class="btn btn-ghost btn-sm" data-toast="下载抵押清单（演示）">下载抵押清单</button>
+              <button type="button" class="btn btn-ghost btn-sm" data-toast="批量上传附件（演示）">批量上传附件</button>
             </div>
             <div class="check-strip" id="checkStrip">[信息完整性提醒]：<span>合格证信息<b class="bad">✗</b></span><span>发票信息<b class="bad">✗</b></span><span>保单信息<b class="bad">✗</b></span><span>信息一致性<b class="bad">✗</b></span></div>
             <div id="assetList"><div class="empty-tip">暂无资产，请添加或由 AI 解析带入</div></div>
             <div class="sum-row">
-              <div class="sum-card"><div class="k">销售总金额（含附加品）</div><div class="v" id="sumSale">0.00元</div></div>
-              <div class="sum-card"><div class="k">融资总金额（含附加品）</div><div class="v red" id="sumLoan">0.00元</div></div>
-              <div class="sum-card"><div class="k">首付款金额（含附加品）</div><div class="v orange" id="sumDown">0.00元</div></div>
+              <div class="sum-card"><div class="k">销售总金额（含附加品）</div><div class="v"><span id="sumSale">0.00元</span></div></div>
+              <div class="sum-card"><div class="k">融资总金额（含附加品）</div><div class="v"><span id="sumLoan">0.00元</span><span class="pct-tag" id="sumLoanPct">0%</span></div></div>
+              <div class="sum-card"><div class="k">首付款金额（含附加品）</div><div class="v"><span id="sumDown">0.00元</span><span class="pct-tag" id="sumDownPct">0%</span></div></div>
               <div class="sum-card"><div class="k">附加品融资比例</div><div class="v">0%</div></div>
             </div>
           </div>
@@ -402,11 +507,9 @@
           </div>
 
           <div class="form-foot">
-            <button type="button" class="btn" id="prevBtn" disabled>上一步</button>
-            <div class="foot-actions">
-              <button type="button" class="btn" id="saveOrderBtn">保存</button>
-              <button type="button" class="btn btn-primary" id="nextBtn">下一步</button>
-            </div>
+            <button type="button" class="btn btn-text" id="prevBtn" disabled>上一步</button>
+            <button type="button" class="btn btn-primary" id="nextBtn">下一步</button>
+            <button type="button" class="btn btn-text" id="saveOrderBtn">保存</button>
           </div>
         </div>
       </section>
@@ -422,7 +525,7 @@
           <div class="f-item" data-field="pMarriage">
             <div class="f-label"><span class="req">*</span>婚姻状况 <span class="ai-tag"></span></div>
             <div class="radio-row" id="pMarriage">
-              <div class="radio-it" data-val="未婚">未婚</div>
+              <div class="radio-it on" data-val="未婚">未婚</div>
               <div class="radio-it" data-val="已婚">已婚</div>
               <div class="radio-it" data-val="离异">离异</div>
               <div class="radio-it" data-val="丧偶">丧偶</div>
@@ -430,8 +533,8 @@
           </div>
         </div>
         <div class="ocr-row">
-          <div class="ocr-box" id="pIdFront" data-upload data-kind="身份证" data-ph="客户身份证人像面"><div class="plus">＋</div><div>客户身份证人像面</div></div>
-          <div class="ocr-box" id="pIdBack" data-upload data-kind="身份证" data-ph="客户身份证国徽面"><div class="plus">＋</div><div>客户身份证国徽面</div></div>
+          <div class="ocr-box idshot" id="pIdFront" data-upload data-kind="身份证" data-ph="客户身份证人像面"><div class="plus">＋</div><div>客户身份证人像面</div></div>
+          <div class="ocr-box idshot" id="pIdBack" data-upload data-kind="身份证" data-ph="客户身份证国徽面"><div class="plus">＋</div><div>客户身份证国徽面</div></div>
           <div class="ocr-info">
             <div class="kv"><span class="k">姓名：</span><span class="v wait" id="pIdName">待识别</span></div>
             <div class="kv"><span class="k">身份证：</span><span class="v wait" id="pIdNo">待识别</span></div>
@@ -465,8 +568,8 @@
         <div class="form-sec hidden" id="spouseSec" data-field="spouse">
           <div class="sec-title">配偶身份证 <span class="sec-desc">已婚客户需录入配偶证件（支持 OCR 识别）</span> <span class="ai-tag"></span></div>
           <div class="ocr-row">
-            <div class="ocr-box" id="sIdFront" data-upload data-kind="配偶身份证" data-ph="配偶身份证人像面"><div class="plus">＋</div><div>配偶身份证人像面</div></div>
-            <div class="ocr-box" id="sIdBack" data-upload data-kind="配偶身份证" data-ph="配偶身份证国徽面"><div class="plus">＋</div><div>配偶身份证国徽面</div></div>
+            <div class="ocr-box idshot" id="sIdFront" data-upload data-kind="配偶身份证" data-ph="配偶身份证人像面"><div class="plus">＋</div><div>配偶身份证人像面</div></div>
+            <div class="ocr-box idshot" id="sIdBack" data-upload data-kind="配偶身份证" data-ph="配偶身份证国徽面"><div class="plus">＋</div><div>配偶身份证国徽面</div></div>
             <div class="ocr-info">
               <div class="kv"><span class="k">姓名：</span><span class="v wait" id="sIdName">待识别</span></div>
               <div class="kv"><span class="k">身份证：</span><span class="v wait" id="sIdNo">待识别</span></div>
@@ -493,7 +596,7 @@
         <div class="form-sec">
           <div class="f-label"><span class="req">*</span>营业执照 <span class="ai-tag"></span></div>
           <div class="ocr-row">
-            <div class="ocr-box" id="cLicenseBox" data-upload data-kind="营业执照" data-ph="营业执照"><div class="plus">＋</div><div>营业执照</div></div>
+            <div class="ocr-box licshot" id="cLicenseBox" data-upload data-kind="营业执照" data-ph="营业执照"><div class="plus">＋</div><div>营业执照</div></div>
             <div class="ocr-info">
               <div class="kv"><span class="k k-wide">公司名称：</span><span class="v wait" id="cCorpName">待识别</span></div>
               <div class="kv"><span class="k k-wide">统一社会信用代码：</span><span class="v wait" id="cCreditCode">待识别</span></div>
@@ -503,8 +606,8 @@
         <div class="form-sec">
           <div class="f-label"><span class="req">*</span>法人身份证 <span class="ai-tag"></span></div>
           <div class="ocr-row">
-            <div class="ocr-box" id="cIdFront" data-upload data-kind="身份证" data-ph="法人身份证人像面"><div class="plus">＋</div><div>法人身份证人像面</div></div>
-            <div class="ocr-box" id="cIdBack" data-upload data-kind="身份证" data-ph="法人身份证国徽面"><div class="plus">＋</div><div>法人身份证国徽面</div></div>
+            <div class="ocr-box idshot" id="cIdFront" data-upload data-kind="身份证" data-ph="法人身份证人像面"><div class="plus">＋</div><div>法人身份证人像面</div></div>
+            <div class="ocr-box idshot" id="cIdBack" data-upload data-kind="身份证" data-ph="法人身份证国徽面"><div class="plus">＋</div><div>法人身份证国徽面</div></div>
             <div class="ocr-info">
               <div class="kv"><span class="k">姓名：</span><span class="v wait" id="cLegalName">待识别</span></div>
               <div class="kv"><span class="k">身份证：</span><span class="v wait" id="cLegalIdNo">待识别</span></div>
@@ -531,7 +634,7 @@
         </div>
       </div>
       <div class="m-ft">
-        <button type="button" class="btn" id="saveCorpGBtn">保存，同时将法人录为担保方</button>
+        <label class="save-check"><input type="checkbox" id="saveCorpAsG"/>保存，同时将法人录为担保方</label>
         <button type="button" class="btn btn-primary" id="saveCorpBtn">保存</button>
       </div>
     </div>

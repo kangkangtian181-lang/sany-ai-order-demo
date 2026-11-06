@@ -28,11 +28,18 @@ function setHidden(el, hide){
 }
 
 function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function gCardHtml(name,phone,idNo){
+  var isCorpG=/公司|有限合伙|事务所/.test(name||"");
+  return "<div class='g-card2'><div class='g-left'><div class='g-avatar2"+(isCorpG?" corp":"")+"'>"+(isCorpG?"法人":"个人")+"</div>"+
+    "<div class='g-ops'><button type='button' class='btn btn-danger btn-sm' data-toast='删除（演示）'>删除</button><button type='button' class='btn btn-primary btn-sm' data-toast='编辑（演示）'>编辑</button></div></div>"+
+    "<div class='g-info2'><div class='g-name2'>"+esc(name)+"<span class='zx'>（征信2027-02-01到期）</span></div>"+
+    "<div class='g-sub'><span><i class='mini'>☎</i>"+esc(phone||"--")+"</span><span><i class='mini'>证</i>"+esc(idNo||"--")+"</span></div></div></div>";
+}
 
 /** 状态标签配色：提升对比、便于扫读 */
 function stClass(st){
   st=String(st||"");
-  if(/已放款|面签成功|预审通过|已保存/.test(st)) return "st-tag st-ok";
+  if(/已放款|面签成功|预审通过/.test(st)) return "st-tag st-ok";
   if(/已驳回|预审拒绝/.test(st)) return "st-tag st-danger";
   if(/审批中|变更中|预审中/.test(st)) return "st-tag st-warn";
   if(/保证金|待放款|待授权/.test(st)) return "st-tag st-proc";
@@ -61,47 +68,77 @@ var DB={
   orders:JSON.parse(localStorage.getItem("v3_orders")||"null")||[
     {no:"20261029000715668",contract:"--",cust:"王学良",amt:"843,200",rate:"5%",term:"36期",attach:"挂靠",attacher:"郑州智运互联物流科技有限公司",prod:"新能源商用车(回租)5.00%按月等额本息",st:"已保存"},
     {no:"20261029000715678",contract:"--",cust:"孙伟锋",amt:"429,000",rate:"4.5%",term:"36期",attach:"挂靠",attacher:"许昌畅稳汽车运输有限公司",prod:"新能源商用车(回租)4.50%按月等额本息",st:"已保存"},
-    {no:"20261028000715398",contract:"SFZ2026715458",cust:"黄柯程",amt:"760,000",rate:"4.5%",term:"30期",attach:"挂靠",attacher:"贵州亿诚物流有限责任公司",prod:"新能源商用车(回租)4.50%按月等额本息",st:"已保存"}
+    {no:"20261028000715398",contract:"SFZ2026715458",cust:"黄柯程",amt:"760,000",rate:"4.5%",term:"30期",attach:"挂靠",attacher:"贵州亿诚物流有限责任公司",prod:"新能源商用车(回租)4.50%按月等额本息",st:"已保存"},
+    {no:"20261031000716208",contract:"--",cust:"武安市天宇运输有限公司",amt:"4,100,000",rate:"4%",term:"24期",attach:"挂靠",attacher:"武安市天宇运输有限公司",prod:"新能源商用车(回租)4.00%按月等额本息",st:"已驳回"},
+    {no:"20261030000716694",contract:"--",cust:"付文强",amt:"3,820,000",rate:"4.5%",term:"36期",attach:"挂靠",attacher:"贵州森途运输有限公司",prod:"新能源商用车(回租)4.50%按月等额本息",st:"已驳回"},
+    {no:"20261029000715714",contract:"--",cust:"唐山市稳航运输有限公司",amt:"7,832,000",rate:"4%",term:"36期",attach:"挂靠",attacher:"唐山市稳航运输有限公司",prod:"新能源商用车(回租)4.00%按月等额本息",st:"已保存"},
+    {no:"20261027000715112",contract:"--",cust:"刘光罗",amt:"429,000",rate:"4.2%",term:"36期",attach:"挂靠",attacher:"鄂尔多斯市富昌升商贸有限公司",prod:"新能源商用车(回租)4.20%按月等额本息",st:"已驳回"},
+    {no:"20261025000714820",contract:"--",cust:"贾怀奇",amt:"945,000",rate:"4.5%",term:"24期",attach:"挂靠",attacher:"北京择山运输有限公司",prod:"新能源商用车(回租)4.50%按月等额本息",st:"已保存"},
+    {no:"20261023000714102",contract:"--",cust:"冯海东",amt:"813,000",rate:"4.5%",term:"36期",attach:"挂靠",attacher:"天津德信通达物资有限公司",prod:"新能源商用车(回租)4.50%按月等额本息",st:"已保存"}
   ],
   persons:JSON.parse(localStorage.getItem("v3_persons")||"null")||[
     {name:"刘丽娟",id:"140321********0048",src:"微信小程序",marriage:"已婚",biz:"工厂担保业务",time:"2026-11-03 15:02:06",st:"待授权"},
-    {name:"许公旺",id:"371525********0011",src:"h5",marriage:"已婚",biz:"工厂担保业务",time:"2026-11-03 14:45:40",st:"预审通过"}
+    {name:"许公旺",id:"371525********0011",src:"h5",marriage:"已婚",biz:"工厂担保业务",time:"2026-11-03 14:45:40",st:"预审通过"},
+    {name:"李芳",id:"142402********0614",src:"h5",marriage:"已婚",biz:"工厂担保业务",time:"2026-11-02 11:02:10",st:"预审通过"},
+    {name:"张金林",id:"430821********0015",src:"业务系统",marriage:"已婚",biz:"工厂担保业务",time:"2026-11-02 10:40:22",st:"待授权"},
+    {name:"李晓礼",id:"120222********0177",src:"h5",marriage:"已婚",biz:"工厂担保业务",time:"2026-11-02 09:18:33",st:"待授权"},
+    {name:"赵建",id:"232627********0029",src:"h5",marriage:"已婚",biz:"工厂担保业务",time:"2026-11-01 16:22:05",st:"预审通过"}
   ],
   corps:JSON.parse(localStorage.getItem("v3_corps")||"null")||[
     {name:"滕州市鼎胜运输有限公司",code:"91370481MAKPPLM65",legal:"王蓬蓬",biz:"工厂担保业务",legalId:"370481********3859",st:"预审通过"},
-    {name:"唐山市稳航运输有限公司",code:"91130283MAEDUB4T0M",legal:"张绍路",biz:"工厂担保业务",legalId:"130223********1119",st:"预审通过"}
+    {name:"唐山市稳航运输有限公司",code:"91130283MAEDUB4T0M",legal:"张绍路",biz:"工厂担保业务",legalId:"130223********1119",st:"预审通过"},
+    {name:"桐乡市实拓供应链管理有限公司",code:"91330483MAKPPTEU6X",legal:"刘耀日",biz:"工厂担保业务",legalId:"331122********3632",st:"预审通过"},
+    {name:"宁波协鼎供应链管理有限公司",code:"91330206MAKNUH1684",legal:"刘芹",biz:"工厂担保业务",legalId:"330225********3914",st:"预审通过"},
+    {name:"嘉兴程熙供应链管理有限公司",code:"91330401MAKRLLW39N",legal:"刘耀日",biz:"工厂担保业务",legalId:"331122********3632",st:"预审通过"},
+    {name:"邯郸市正道运输有限公司",code:"91130402MA0G1L4QC11",legal:"程田",biz:"工厂担保业务",legalId:"132122********1816",st:"待授权"},
+    {name:"宁夏聚鑫茂发运输有限公司",code:"91640100MACFX2X59A",legal:"杨保华",biz:"工厂担保业务",legalId:"342223********2075",st:"预审通过"},
+    {name:"盐池鑫源盛工贸有限公司",code:"91640223MA76J5W448",legal:"朱江红",biz:"工厂担保业务",legalId:"640323********2028",st:"待授权"},
+    {name:"会东鑫盛运输部",code:"92513426MA4CHK6T",legal:"刘代松",biz:"工厂担保业务",legalId:"513426********0510",st:"待授权"}
   ]
 };
 function saveDB(){localStorage.setItem("v3_orders",JSON.stringify(DB.orders));localStorage.setItem("v3_persons",JSON.stringify(DB.persons));localStorage.setItem("v3_corps",JSON.stringify(DB.corps));}
 
 /* ================= 列表渲染 ================= */
+function setCount(id,n){var el=document.getElementById(id);if(el)el.textContent="共 "+n+" 条";}
+function opsCell(){
+  return "<td class='ops'><button type='button' class='op-link' data-toast='预审信息（演示）'>预审信息</button><button type='button' class='op-link' data-toast='编辑（演示）'>编辑</button><button type='button' class='op-link' data-toast='预审记录（演示）'>预审记录</button><button type='button' class='op-link' data-toast='更多（演示）'>更多</button></td>";
+}
 function renderOrders(){
   var tb=$("#orderTable tbody");tb.innerHTML="";
+  var n=0;
   DB.orders.forEach(function(o){
-    var tr=document.createElement("tr");
     if(!rowMatch(o,listQuery.order)) return;
-    tr.innerHTML="<td class='link'>"+esc(o.no)+"</td><td>"+esc(o.contract)+"</td><td>"+esc(o.cust)+"</td><td>"+esc(o.amt)+"</td><td>"+esc(o.rate)+"</td><td>"+esc(o.term)+"</td><td>"+esc(o.attach)+"</td><td>"+esc(o.attacher)+"</td><td>"+esc(o.prod)+"</td><td><span class='"+stClass(o.st)+"'>"+esc(o.st)+"</span></td>"+
-      "<td><button class='btn btn-primary btn-sm' data-editorder='"+esc(o.no)+"'>编辑</button></td>";
+    n++;
+    var tr=document.createElement("tr");
+    tr.innerHTML="<td class='link' data-editorder='"+esc(o.no)+"'>"+esc(o.no)+"</td><td>"+esc(o.contract)+"</td><td>"+esc(o.cust)+"</td><td>"+esc(o.amt)+"</td><td>"+esc(o.rate)+"</td><td>"+esc(o.term)+"</td><td>"+esc(o.attach)+"</td><td>"+esc(o.attacher)+"</td><td>--</td><td>"+esc(o.prod)+"</td><td><span class='"+stClass(o.st)+"'>"+esc(o.st)+"</span></td>"+
+      "<td class='ops'><button type='button' class='op-link' data-toast='提交放款（演示）'>提交放款</button><button type='button' class='op-link' data-toast='编辑资产/附件（演示）'>编辑资产/附件</button><button type='button' class='op-link' data-editorder='"+esc(o.no)+"'>编辑</button><button type='button' class='op-link' data-toast='更多（演示）'>更多</button></td>";
     tb.appendChild(tr);
   });
+  setCount("orderCount",n);
 }
 function renderPersons(){
   var tb=$("#personTable tbody");tb.innerHTML="";
+  var n=0;
   DB.persons.forEach(function(p){
     if(!rowMatch(p,listQuery.person)) return;
+    n++;
     var tr=document.createElement("tr");
-    tr.innerHTML="<td>"+esc(p.name)+"</td><td>"+esc(p.id)+"</td><td>"+esc(p.src)+"</td><td>"+esc(p.marriage)+"</td><td>"+esc(p.biz)+"</td><td>"+esc(p.time)+"</td><td><span class='"+stClass(p.st)+"'>"+esc(p.st)+"</span></td>";
+    tr.innerHTML="<td>"+esc(p.name)+"</td><td>"+esc(p.id)+"</td><td>"+esc(p.src)+"</td><td>"+esc(p.marriage)+"</td><td>--</td><td>"+esc(p.biz)+"</td><td>"+esc(p.time)+"</td><td>--</td><td><span class='"+stClass(p.st)+"'>"+esc(p.st)+"</span></td>"+opsCell();
     tb.appendChild(tr);
   });
+  setCount("personCount",n);
 }
 function renderCorps(){
   var tb=$("#corpTable tbody");tb.innerHTML="";
+  var n=0;
   DB.corps.forEach(function(c){
     if(!rowMatch(c,listQuery.corp)) return;
+    n++;
     var tr=document.createElement("tr");
-    tr.innerHTML="<td>"+esc(c.name)+"</td><td>"+esc(c.code)+"</td><td>"+esc(c.legal)+"</td><td>"+esc(c.biz)+"</td><td>"+esc(c.legalId)+"</td><td><span class='"+stClass(c.st)+"'>"+esc(c.st)+"</span></td>";
+    tr.innerHTML="<td>"+esc(c.name)+"</td><td>"+esc(c.code)+"</td><td>"+(esc(c.src||"h5"))+"</td><td>--</td><td>"+esc(c.legal)+"</td><td>"+esc(c.biz)+"</td><td>"+esc(c.legalId)+"</td><td>--</td><td>--</td><td><span class='"+stClass(c.st)+"'>"+esc(c.st)+"</span></td>"+opsCell();
     tb.appendChild(tr);
   });
+  setCount("corpCount",n);
 }
 renderOrders();renderPersons();renderCorps();
 
@@ -130,11 +167,26 @@ bindSearch("#corpSearch","#corpQueryBtn","#corpResetBtn","corp",renderCorps);
 var VIEWS=["orderList","personList","corpList","wizard"];
 function show(v){
   VIEWS.forEach(function(x){setHidden(document.getElementById("view-"+x), x!==v);});
+  var navKey=v==="wizard"?"orderList":v;
   $all(".nav-sub").forEach(function(n){
     var map={order:"orderList",person:"personList",corp:"corpList"};
-    n.classList.toggle("active",map[n.dataset.nav]===v);
+    n.classList.toggle("active",map[n.dataset.nav]===navKey);
+  });
+  $all("#pageTabs .page-tab").forEach(function(t){
+    t.classList.toggle("on", t.dataset.view===v);
   });
 }
+var pageTabs=$("#pageTabs");
+if(pageTabs) pageTabs.addEventListener("click",function(e){
+  var t=e.target.closest(".page-tab"); if(!t) return;
+  if(e.target.closest(".tab-x")){
+    if(t.classList.contains("on") && t.dataset.view!=="orderList") show("orderList");
+    return;
+  }
+  var v=t.dataset.view;
+  if(!v||v==="home"){show("orderList");return;}
+  show(v);
+});
 $all(".nav-sub,.nav-item").forEach(function(n){
   n.addEventListener("click",function(){
     var k=n.dataset.nav;
@@ -229,21 +281,32 @@ function renderAssets(){
   assets.forEach(function(a,i){
     var loan=Math.round(a.price*a.ratio/100);
     var card=document.createElement("div");card.className="asset-card";
-    card.innerHTML="<div class='asset-idx'>"+(i+1)+"、</div>"+
-      "<div class='asset-main'><div class='asset-title'>"+esc(a.code)+" / "+esc(a.name)+"</div>"+
-      "<div>销售金额：<b>"+a.price.toLocaleString()+"</b> 元　融资金额：<span class='amt'>"+loan.toLocaleString()+"元</span><span class='pct-tag'>"+a.ratio+"%</span>　附加品融资比例：0%</div>"+
-      "<div class='asset-meta'>挂靠方："+esc(a.attacher||"--")+"　｜　燃料种类："+esc(a.fuel||"新能源")+"　｜　合格证："+esc(a.certNo||"待补录")+"　车架号："+esc(a.vin||"待补录")+"　发动机号："+esc(a.engineNo||"待补录")+"</div></div>"+
-      "<div class='asset-ops'><button class='asset-edit-btn' data-assetedit='"+i+"'>编辑</button></div>";
+    function kv(k,v){return "<div class='asset-kv'><span>"+k+"</span><b>"+esc(v||"--")+"</b></div>";}
+    function hasVal(v){v=v==null?"":String(v).trim();return !!(v && v!=="--" && v!=="待补录");}
+    function seal(cls,label,ok){return "<div class='seal "+cls+(ok?" ok":"")+"'><i></i><span>"+label+(ok?" <b class='mark'>✓</b>":"")+"</span></div>";}
+    card.innerHTML="<div class='asset-ico' aria-hidden='true'></div>"+
+      "<div class='asset-main'><div class='asset-title'>"+(i+1)+"、"+esc(a.code)+"/"+esc(a.name)+"</div>"+
+      "<div>销售金额："+Number(a.price).toLocaleString()+"</div>"+
+      "<div>融资金额："+loan.toLocaleString()+"元<span class='pct-tag'>"+(Number(a.ratio)||0).toFixed(2)+"%</span></div>"+
+      "<div>附加品融资比例：0%</div>"+
+      "<div>挂靠方："+esc(a.attacher||"--")+"</div>"+
+      "<div class='asset-ops'><button type='button' class='op-link asset-edit-btn' data-assetedit='"+i+"'>编辑</button><button type='button' class='op-link' data-toast='已复制资产（演示）'>复制</button><button type='button' class='op-link danger' data-toast='移除（演示）'>移除</button></div></div>"+
+      "<div class='asset-side'>"+kv("合格证号",a.certNo)+kv("车架号",a.vin)+kv("发动机号",a.engineNo)+kv("整车编码",a.vehicleCode)+kv("燃料种类",a.fuel||"新能源")+"</div>"+
+      "<div class='asset-seals'>"+seal("cert","合格证",hasVal(a.certNo))+seal("inv","发票",hasVal(a.invNo))+seal("ins","保单",hasVal(a.policyNo))+"</div>";
     box.appendChild(card);
   });
   calcSum();
 }
 function calcSum(){
   var sale=0,loan=0;
-  assets.forEach(function(a){sale+=a.price;loan+=Math.round(a.price*a.ratio/100);});
-  $("#sumSale").textContent=sale.toLocaleString()+".00元";
-  $("#sumLoan").textContent=loan.toLocaleString()+".00元";
-  $("#sumDown").textContent=(sale-loan).toLocaleString()+".00元";
+  assets.forEach(function(a){sale+=Number(a.price)||0;loan+=Math.round((Number(a.price)||0)*(Number(a.ratio)||0)/100);});
+  function m(n){return (Number(n)||0).toLocaleString()+".00元";}
+  $("#sumSale").textContent=m(sale);
+  $("#sumLoan").textContent=m(loan);
+  $("#sumDown").textContent=m(sale-loan);
+  var lp=$("#sumLoanPct"), dp=$("#sumDownPct");
+  if(lp){lp.textContent=sale?(loan/sale*100).toFixed(2)+"%":"0%";lp.style.display=sale?"inline-block":"none";}
+  if(dp){dp.textContent=sale?((sale-loan)/sale*100).toFixed(2)+"%":"0%";dp.style.display=sale?"inline-block":"none";}
 }
 renderAssets();
 
@@ -871,11 +934,7 @@ function fillOrderWizard(fields,confidence){
   function fillGuarantor(){
     var gn=fv(fields,"guarantor.name");
     if(!gn)return;
-    var isCorpG=/公司|有限合伙|事务所/.test(gn);
-    var html="<div class='g-card2'><div class='g-left'><div class='g-avatar2"+(isCorpG?" corp":"")+"'>"+(isCorpG?"法人":"个人")+"</div>"+
-      "<div class='g-ops'><button type='button' class='btn btn-danger btn-sm' data-toast='删除（演示）'>删除</button><button type='button' class='btn btn-primary btn-sm' data-toast='编辑（演示）'>编辑</button></div></div>"+
-      "<div class='g-info2'><div class='g-name2'>"+esc(gn)+"<span class='zx'>（征信2027-01-28到期）</span></div>"+
-      "<div class='g-sub'>📱 "+esc(fv(fields,"guarantor.phone")||"--")+"　　🪪 "+esc(fv(fields,"guarantor.idNo")||"--")+"</div></div></div>";
+    var html=gCardHtml(gn,fv(fields,"guarantor.phone"),fv(fields,"guarantor.idNo"));
     $("#guarantorList").innerHTML=html;
     $("#counterGList").innerHTML=html;
     markField("guarantor",confidence["guarantor.name"]);
@@ -1246,8 +1305,10 @@ function saveCorp(withG){
   saveDB();renderCorps();closeMask("corpMask");
   okModal("法人客户已保存"+(withG?"，法人已同步录为担保方":""),[["公司名称",name],["统一社会信用代码",$("#cCreditCode").textContent],["法人",$("#cLegalName").textContent],["法人手机号",$("#cPhone").value||"--"],["预贷款金额",$("#cPreLoan").value?$("#cPreLoan").value+" 万":"--"]]);
 }
-$("#saveCorpBtn").addEventListener("click",function(){saveCorp(false);});
-$("#saveCorpGBtn").addEventListener("click",function(){saveCorp(true);});
+$("#saveCorpBtn").addEventListener("click",function(){
+  var asG=document.getElementById("saveCorpAsG");
+  saveCorp(!!(asG&&asG.checked));
+});
 
 /* ================= 订单编辑 ================= */
 var editingOrderNo=null;
@@ -1284,11 +1345,7 @@ function fillWizardFromOrder(o){
   if(f.assets&&f.assets.length){assets=f.assets;renderAssets();}
   if(f.guarantor){
     var g=f.guarantor;
-    var isCorpG=/公司|有限合伙|事务所/.test(g.name);
-    var html="<div class='g-card2'><div class='g-left'><div class='g-avatar2"+(isCorpG?" corp":"")+"'>"+(isCorpG?"法人":"个人")+"</div>"+
-      "<div class='g-ops'><button type='button' class='btn btn-danger btn-sm' data-toast='删除（演示）'>删除</button><button type='button' class='btn btn-primary btn-sm' data-toast='编辑（演示）'>编辑</button></div></div>"+
-      "<div class='g-info2'><div class='g-name2'>"+esc(g.name)+"<span class='zx'>（征信2027-01-28到期）</span></div>"+
-      "<div class='g-sub'>📱 "+esc(g.phone||"--")+"　　🪪 "+esc(g.idNo||"--")+"</div></div></div>";
+    var html=gCardHtml(g.name,g.phone,g.idNo);
     $("#guarantorList").innerHTML=html;
     $("#counterGList").innerHTML=html;
   }
