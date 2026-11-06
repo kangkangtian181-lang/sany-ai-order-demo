@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><circle cx=%2216%22 cy=%2216%22 r=%2214%22 fill=%22%231f4fd8%22/><text x=%2216%22 y=%2221%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2214%22 font-family=%22sans-serif%22>S</text></svg>"/>
+  <title>三一汽金 · AI 智能录单 Demo（全字段版）</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <!-- 顶栏 -->
+  <header class="topbar">
+    <div class="logo">
+      <span class="tri">S</span>
+      三一汽金 · 代理商平台
+      <span class="demo-badge">AI 录单 Demo</span>
+    </div>
+    <span class="tb-item">贷款试算</span>
+    <span class="tb-item">下载中心</span>
+    <span class="tb-item">小程序</span>
+    <div class="tb-right">
+      <span class="pill">湖南汽车制造有限责任公司长沙分公司（重卡）</span>
+      <span class="user-name">tiankk</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <!-- 左侧导航：订单列表 / 个人客户 / 法人客户 -->
+    <nav class="sidenav" aria-label="主导航">
+      <div class="nav-group">
+        <div class="nav-item" data-nav="order">订单 <span class="caret">▾</span></div>
+        <div class="nav-sub active" data-nav="order">订单管理</div>
+      </div>
+      <div class="nav-group">
+        <div class="nav-item" data-nav="cust">客户/担保 <span class="caret">▾</span></div>
+        <div class="nav-sub" data-nav="person">个人客户</div>
+        <div class="nav-sub" data-nav="corp">法人客户</div>
+        <div class="nav-sub dim" data-nav="">挂靠方</div>
+        <div class="nav-sub dim" data-nav="">担保方</div>
+      </div>
+      <div class="nav-item dim" data-nav="">回款</div>
+      <div class="nav-item dim" data-nav="">结清</div>
+      <div class="nav-item dim" data-nav="">财务</div>
+      <div class="nav-item dim" data-nav="">用户</div>
+    </nav>
+
+    <main class="main" id="main">
+      <!-- ========= 订单管理列表 ========= -->
+      <section id="view-orderList">
+        <div class="crumbs">首页 / <b>订单管理</b></div>
+        <div class="card">
+          <div class="stat-tabs" id="orderTabs">
+            <span class="stat-tab">全部(3803)</span>
+            <span class="stat-tab on">待处理(212)</span>
+            <span class="stat-tab">已驳回(661)</span>
+            <span class="stat-tab">审批中(1)</span>
+            <span class="stat-tab">面签成功(0)</span>
+            <span class="stat-tab">保证金扣款中(0)</span>
+            <span class="stat-tab">待放款(0)</span>
+            <span class="stat-tab">已放款(2904)</span>
+            <span class="stat-tab">变更中(0)</span>
+          </div>
+          <div class="list-head">
+            <div class="search-box">
+              <input id="orderSearch" placeholder="订单号/合同号/客户名称/客户手机号/产品名称"/>
+            </div>
+            <div class="toolbar-actions">
+              <button type="button" class="btn" id="orderQueryBtn">查询</button>
+              <button type="button" class="btn" id="orderResetBtn">重置</button>
+              <button type="button" class="btn btn-orange" id="newOrderBtn">＋ 新增订单</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="grid" id="orderTable">
+              <thead>
+                <tr>
+                  <th>订单号</th>
+                  <th>合同号</th>
+                  <th>客户名称</th>
+                  <th>贷款金额</th>
+                  <th>利率</th>
+                  <th>期限</th>
+                  <th>挂靠方式</th>
+                  <th>挂靠方</th>
+                  <th>产品名称</th>
+                  <th>订单状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========= 个人客户列表 ========= -->
+      <section id="view-personList" class="hidden">
+        <div class="crumbs">首页 / 客户/担保 / <b>个人客户</b></div>
+        <div class="card">
+          <div class="stat-tabs" id="personTabs">
+            <span class="stat-tab on">全部(1882)</span>
+            <span class="stat-tab">待授权(1295)</span>
+            <span class="stat-tab">预审中(0)</span>
+            <span class="stat-tab">预审通过(619)</span>
+            <span class="stat-tab">预审拒绝(31)</span>
+          </div>
+          <div class="list-head">
+            <div class="search-box">
+              <input id="personSearch" placeholder="搜索客户或配偶姓名/身份证/手机号"/>
+            </div>
+            <div class="toolbar-actions">
+              <button type="button" class="btn" id="personQueryBtn">查询</button>
+              <button type="button" class="btn" id="personResetBtn">重置</button>
+              <button type="button" class="btn btn-orange" id="newPersonBtn">＋ 录客户</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="grid" id="personTable">
+              <thead>
+                <tr>
+                  <th>客户姓名</th>
+                  <th>身份证</th>
+                  <th>客户来源</th>
+                  <th>婚姻状况</th>
+                  <th>业务类型</th>
+                  <th>创建时间</th>
+                  <th>汽金状态</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========= 法人客户列表 ========= -->
+      <section id="view-corpList" class="hidden">
+        <div class="crumbs">首页 / 客户/担保 / <b>法人客户</b></div>
+        <div class="card">
+          <div class="stat-tabs" id="corpTabs">
+            <span class="stat-tab on">全部(1378)</span>
+            <span class="stat-tab">待授权(1249)</span>
+            <span class="stat-tab">预审通过(189)</span>
+            <span class="stat-tab">预审拒绝(7)</span>
+          </div>
+          <div class="list-head">
+            <div class="search-box">
+              <input id="corpSearch" placeholder="搜索企业名称/统一社会信用代码/法人姓名/法人身份证号"/>
+            </div>
+            <div class="toolbar-actions">
+              <button type="button" class="btn" id="corpQueryBtn">查询</button>
+              <button type="button" class="btn" id="corpResetBtn">重置</button>
+              <button type="button" class="btn btn-orange" id="newCorpBtn">＋ 录客户</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="grid" id="corpTable">
+              <thead>
+                <tr>
+                  <th>客户姓名</th>
+                  <th>统一社会信用代码</th>
+                  <th>法人姓名</th>
+                  <th>业务类型</th>
+                  <th>法人身份证号</th>
+                  <th>汽金状态</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========= 新增订单（四步向导） ========= -->
+      <section id="view-wizard" class="hidden">
+        <div class="crumbs">首页 / 订单管理 / <b>编辑订单</b> <span class="mode-hint">AI 录单模式</span></div>
+        <div class="card">
+          <div class="steps-bar" id="stepsBar">
+            <div class="step-it on"><span class="n">1</span>选择金融产品</div>
+            <div class="step-line"></div>
+            <div class="step-it"><span class="n">2</span>添加客户、担保人</div>
+            <div class="step-line"></div>
+            <div class="step-it"><span class="n">3</span>添加资产</div>
+            <div class="step-line"></div>
+            <div class="step-it"><span class="n">4</span>上传附件</div>
+          </div>
+
+          <!-- 第一步：产品信息 -->
+          <div id="step1">
+            <div class="form-sec">
+              <div class="f-row">
+                <div class="f-item" data-field="bizType">
+                  <div class="f-label">业务类型 <span class="ai-tag"></span></div>
+                  <div class="opt-tags" id="bizType">
+                    <span class="opt-tag" data-val="零售新车">零售新车</span>
+                    <span class="opt-tag" data-val="商用车库融">商用车库融</span>
+                    <span class="opt-tag" data-val="零售二手车">零售二手车</span>
+                    <span class="opt-tag" data-val="存量机构">存量机构</span>
+                    <span class="opt-tag" data-val="外部零售新车">外部零售新车</span>
+                    <span class="opt-tag" data-val="外部零售二手车">外部零售二手车</span>
+                  </div>
+                </div>
+              </div>
+              <div class="f-row">
+                <div class="f-item" data-field="prodType">
+                  <div class="f-label">产品类型 <span class="ai-tag"></span></div>
+                  <div class="opt-tags" id="prodType">
+                    <span class="opt-tag" data-val="按揭">按揭</span>
+                    <span class="opt-tag" data-val="回租">回租</span>
+                    <span class="opt-tag" data-val="直租">直租</span>
+                    <span class="opt-tag" data-val="库融">库融</span>
+                  </div>
+                </div>
+              </div>
+              <div class="f-row">
+                <div class="f-item" data-field="calcType">
+                  <div class="f-label">计算方式 <span class="ai-tag"></span></div>
+                  <div class="opt-tags" id="calcType">
+                    <span class="opt-tag" data-val="等额本息">等额本息</span>
+                    <span class="opt-tag" data-val="等额本金">等额本金</span>
+                  </div>
+                </div>
+              </div>
+              <div class="f-row">
+                <div class="f-item" data-field="repayType">
+                  <div class="f-label">还款方式 <span class="ai-tag"></span></div>
+                  <div class="opt-tags" id="repayType">
+                    <span class="opt-tag" data-val="按月等额本息">按月等额本息</span>
+                    <span class="opt-tag" data-val="前N月（1-6）还息不还本等额本息">前N月（1-6）还息不还本等额本息</span>
+                    <span class="opt-tag" data-val="按季等额本息">按季等额本息</span>
+                    <span class="opt-tag" data-val="冬歇期等额本息">冬歇期等额本息</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-sec">
+              <div class="f-row">
+                <div class="f-item" data-field="product">
+                  <div class="f-label"><span class="req">*</span>金融产品 <span class="ai-tag"></span></div>
+                  <select class="f-select" id="product">
+                    <option value="">请选择金融产品</option>
+                    <option>仅厂担-商用车-零售新车-回租-新能源-普通产品3.0</option>
+                    <option>双担保-工程机械-零售新机-回租-燃油-泵路大客户专项产品（5台）2.0</option>
+                    <option>零售二手车-按揭-标准产品</option>
+                  </select>
+                  <div class="prod-tags hidden" id="prodTags">
+                    <span class="prod-tag">还款日类型:固定15日还款</span>
+                    <span class="prod-tag">计息规则:按月计息</span>
+                    <span class="prod-tag">罚息收取规则:利率上浮50%</span>
+                    <span class="prod-tag">贷款年限:5年</span>
+                  </div>
+                </div>
+              </div>
+              <div class="f-row">
+                <div class="f-item" data-field="rate">
+                  <div class="f-label"><span class="req">*</span>产品利率(%) <span class="ai-tag"></span></div>
+                  <input class="f-input" id="rate" placeholder="如 5.00"/>
+                </div>
+                <div class="f-item" data-field="term">
+                  <div class="f-label"><span class="req">*</span>贷款期数 <span class="ai-tag"></span></div>
+                  <select class="f-select" id="term">
+                    <option value="">请选择</option>
+                    <option value="12">12期（1年）</option>
+                    <option value="24">24期（2年）</option>
+                    <option value="36">36期（3年）</option>
+                    <option value="48">48期（4年）</option>
+                    <option value="60">60期（5年）</option>
+                  </select>
+                </div>
+                <div class="f-item" data-field="isDiscount">
+                  <div class="f-label"><span class="req">*</span>是否贴息 <span class="ai-tag"></span></div>
+                  <div class="radio-row" id="isDiscount">
+                    <div class="radio-it" data-val="是">是</div>
+                    <div class="radio-it" data-val="否">否</div>
+                  </div>
+                </div>
+              </div>
+              <div class="f-row">
+                <div class="f-item" data-field="account">
+                  <div class="f-label"><span class="req">*</span>收款账户 <span class="ai-tag"></span></div>
+                  <select class="f-select" id="account">
+                    <option value="">请选择收款账户</option>
+                    <option>兴业银行(湖南汽车制造有限责任公司长沙分公司)</option>
+                    <option>三一汽车金融有限公司-建行长沙华兴支行</option>
+                  </select>
+                  <div class="acct-info hidden" id="acctInfo">
+                    <div>
+                      <div class="k">收款账户开户行</div>
+                      <div class="v" id="acctBank">--</div>
+                    </div>
+                    <div>
+                      <div class="k">收款账户账号</div>
+                      <div class="v" id="acctNo">--</div>
+                    </div>
+                    <div>
+                      <div class="k">收款账户银联号</div>
+                      <div class="v" id="acctUnion">--</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 第二步：客户与担保 -->
+          <div id="step2" class="hidden">
+            <div class="form-sec">
+              <div class="r-row" data-field="custName">
+                <div class="r-label"><span class="req">*</span>客户名称 <span class="ai-tag"></span></div>
+                <input class="f-input r-input" id="custName" placeholder="请选择客户"/>
+              </div>
+              <div class="r-row">
+                <div class="r-label">客户信息</div>
+                <div class="r-actions">
+                  <button type="button" class="btn btn-primary" data-toast="已按客户名称拉取最新客户信息（演示）">✎ 更新客户信息</button>
+                  <button type="button" class="btn btn-orange" data-toast="关联CRM销售订单（演示）">关联CRM销售订单</button>
+                </div>
+              </div>
+              <div class="r-row" data-field="isBuyer">
+                <div class="r-label"><span class="req">*</span>借款人是否为实际购买人 <span class="ai-tag"></span></div>
+                <div class="radio-row" id="isBuyer">
+                  <div class="radio-it" data-val="是">是</div>
+                  <div class="radio-it" data-val="否">否</div>
+                </div>
+              </div>
+              <div class="r-row" data-field="attachType">
+                <div class="r-label"><span class="req">*</span>挂靠方式 <span class="ai-tag"></span></div>
+                <div class="radio-row" id="attachType">
+                  <div class="radio-it" data-val="非挂靠">非挂靠</div>
+                  <div class="radio-it" data-val="挂靠">挂靠</div>
+                  <div class="radio-it disabled" data-val="委托挂靠">委托挂靠</div>
+                </div>
+              </div>
+              <div class="r-row" data-field="sameAttacher">
+                <div class="r-label"><span class="req">*</span>是否同一挂靠方 <span class="ai-tag"></span></div>
+                <div class="radio-row" id="sameAttacher">
+                  <div class="radio-it" data-val="是">是</div>
+                  <div class="radio-it" data-val="否">否</div>
+                </div>
+              </div>
+              <div class="r-row" data-field="attacher">
+                <div class="r-label"><span class="req">*</span>挂靠方 <span class="ai-tag"></span></div>
+                <input class="f-input r-input" id="attacher" placeholder="如：贵州犇途运输有限公司"/>
+              </div>
+              <div class="r-row" data-field="city">
+                <div class="r-label">备案城市 <span class="ai-tag"></span></div>
+                <select class="f-select r-input" id="city">
+                  <option value="">请选择备案城市</option>
+                  <option>长沙</option>
+                  <option>郑州</option>
+                  <option>武汉</option>
+                  <option>石家庄</option>
+                  <option>唐山</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-sec" data-field="guarantor">
+              <div class="sec-head">担保方 <span class="sec-desc">指直接对三一金融提供连带责任担保的个人或法人，双无担保业务企业客户，需至少一位实控人担保方</span> <span class="ai-tag"></span></div>
+              <div class="sec-add">
+                <button type="button" class="btn btn-orange btn-sm" data-toast="演示模式：担保方由 AI 解析自动带入，或手工添加">＋ 添加担保方</button>
+              </div>
+              <div id="guarantorList"><div class="empty-tip">暂无担保方信息，可点击添加</div></div>
+            </div>
+            <div class="form-sec">
+              <div class="sec-head">反担保 <span class="sec-desc">指直接对保证人【经销商】提供反担保的个人或法人</span></div>
+              <div class="sec-add">
+                <button type="button" class="btn btn-orange btn-sm" data-toast="演示模式：反担保由 AI 解析自动带入">＋ 添加反担保</button>
+              </div>
+              <div id="counterGList"><div class="empty-tip">暂无反担保信息，可点击添加</div></div>
+            </div>
+          </div>
+
+          <!-- 第三步：资产 -->
+          <div id="step3" class="hidden">
+            <div class="asset-tools">
+              <button type="button" class="btn btn-orange btn-sm" id="addAssetBtn">＋ 添加资产</button>
+              <button type="button" class="btn btn-primary btn-sm" data-toast="批量导入资产（演示）">▦ 批量导入资产</button>
+              <button type="button" class="btn btn-sm" data-toast="下载模板（演示）">下载模板</button>
+            </div>
+            <div class="check-strip" id="checkStrip">[信息完整性提醒]：<span>合格证信息<b class="bad">✗</b></span><span>发票信息<b class="bad">✗</b></span><span>保单信息<b class="bad">✗</b></span><span>信息一致性<b class="bad">✗</b></span></div>
+            <div id="assetList"><div class="empty-tip">暂无资产，请添加或由 AI 解析带入</div></div>
+            <div class="sum-row">
+              <div class="sum-card"><div class="k">销售总金额（含附加品）</div><div class="v" id="sumSale">0.00元</div></div>
+              <div class="sum-card"><div class="k">融资总金额（含附加品）</div><div class="v red" id="sumLoan">0.00元</div></div>
+              <div class="sum-card"><div class="k">首付款金额（含附加品）</div><div class="v orange" id="sumDown">0.00元</div></div>
+              <div class="sum-card"><div class="k">附加品融资比例</div><div class="v">0%</div></div>
+            </div>
+          </div>
+
+          <!-- 第四步：尽调信息 + 信审材料（原站放在步骤 4「上传附件」） -->
+          <div id="step4" class="hidden">
+            <div class="form-sec">
+              <div class="sec-title"><span class="req-mark">* </span>尽调信息</div>
+              <button type="button" class="btn" data-toast="尽调信息由风控尽调流程生成（演示）">👁 查看尽调信息</button>
+            </div>
+            <div class="form-sec">
+              <div class="sec-title">信审材料</div>
+              <div id="attChecklist"></div>
+              <input type="file" id="matFileInput" class="visually-hidden" multiple accept="image/*,.pdf"/>
+              <div class="f-hint">提示：在右侧 AI 助手中上传的附件会自动归类到这里；也可以点击「+」直接补传，支持多选。</div>
+            </div>
+          </div>
+
+          <div class="form-foot">
+            <button type="button" class="btn" id="prevBtn" disabled>上一步</button>
+            <div class="foot-actions">
+              <button type="button" class="btn" id="saveOrderBtn">保存</button>
+              <button type="button" class="btn btn-primary" id="nextBtn">下一步</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ========= 新增个人客户弹窗 ========= -->
+  <div class="mask" id="personMask">
+    <div class="modal lg">
+      <div class="m-hd"><span class="t">新增个人客户</span><span class="x" data-close="personMask">✕</span></div>
+      <div class="m-bd">
+        <div class="f-row">
+          <div class="f-item" data-field="pMarriage">
+            <div class="f-label"><span class="req">*</span>婚姻状况 <span class="ai-tag"></span></div>
+            <div class="radio-row" id="pMarriage">
+              <div class="radio-it" data-val="未婚">未婚</div>
+              <div class="radio-it" data-val="已婚">已婚</div>
+              <div class="radio-it" data-val="离异">离异</div>
+              <div class="radio-it" data-val="丧偶">丧偶</div>
+            </div>
+          </div>
+        </div>
+        <div class="ocr-row">
+          <div class="ocr-box" id="pIdFront" data-upload data-kind="身份证" data-ph="客户身份证人像面"><div class="plus">＋</div><div>客户身份证人像面</div></div>
+          <div class="ocr-box" id="pIdBack" data-upload data-kind="身份证" data-ph="客户身份证国徽面"><div class="plus">＋</div><div>客户身份证国徽面</div></div>
+          <div class="ocr-info">
+            <div class="kv"><span class="k">姓名：</span><span class="v wait" id="pIdName">待识别</span></div>
+            <div class="kv"><span class="k">身份证：</span><span class="v wait" id="pIdNo">待识别</span></div>
+            <div class="kv"><span class="k">性别：</span><span class="v wait" id="pIdGender">待识别</span></div>
+            <div class="kv"><span class="k">民族：</span><span class="v wait" id="pIdNation">待识别</span></div>
+            <div class="kv"><span class="k">住址：</span><span class="v wait" id="pIdAddr">待识别</span></div>
+            <div class="kv"><span class="k">年龄：</span><span class="v wait" id="pIdAge">待识别</span></div>
+            <div class="kv"><span class="k">有效期限：</span><span class="v wait" id="pIdValid">待识别</span></div>
+          </div>
+        </div>
+        <div class="f-row">
+          <div class="f-item" data-field="pPhone">
+            <div class="f-label"><span class="req">*</span>客户手机号 <span class="ai-tag"></span></div>
+            <input class="f-input" id="pPhone" placeholder="请输入客户手机号"/>
+          </div>
+          <div class="f-item" data-field="pEmail">
+            <div class="f-label"><span class="req">*</span>联系邮箱 <span class="ai-tag"></span></div>
+            <input class="f-input" id="pEmail" placeholder="请输入邮箱"/>
+          </div>
+          <div class="f-item" data-field="pPreLoan">
+            <div class="f-label"><span class="req">*</span>客户预贷款金额（万） <span class="ai-tag"></span></div>
+            <input class="f-input" id="pPreLoan" placeholder="请输入1-10,000整数"/>
+          </div>
+        </div>
+        <div class="f-row">
+          <div class="f-item" data-field="pSingle">
+            <div class="f-label">未婚材料证明</div>
+            <div class="ocr-box ocr-box-sm" id="pSingleBox" data-upload data-kind="婚姻证明" data-ph="未婚材料证明"><div class="plus">＋</div><div>未婚材料证明</div></div>
+          </div>
+        </div>
+        <div class="form-sec hidden" id="spouseSec" data-field="spouse">
+          <div class="sec-title">配偶身份证 <span class="sec-desc">已婚客户需录入配偶证件（支持 OCR 识别）</span> <span class="ai-tag"></span></div>
+          <div class="ocr-row">
+            <div class="ocr-box" id="sIdFront" data-upload data-kind="配偶身份证" data-ph="配偶身份证人像面"><div class="plus">＋</div><div>配偶身份证人像面</div></div>
+            <div class="ocr-box" id="sIdBack" data-upload data-kind="配偶身份证" data-ph="配偶身份证国徽面"><div class="plus">＋</div><div>配偶身份证国徽面</div></div>
+            <div class="ocr-info">
+              <div class="kv"><span class="k">姓名：</span><span class="v wait" id="sIdName">待识别</span></div>
+              <div class="kv"><span class="k">身份证：</span><span class="v wait" id="sIdNo">待识别</span></div>
+              <div class="kv"><span class="k">性别：</span><span class="v wait" id="sIdGender">待识别</span></div>
+              <div class="kv"><span class="k">民族：</span><span class="v wait" id="sIdNation">待识别</span></div>
+              <div class="kv"><span class="k">住址：</span><span class="v wait" id="sIdAddr">待识别</span></div>
+              <div class="kv"><span class="k">有效期限：</span><span class="v wait" id="sIdValid">待识别</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="m-ft">
+        <button type="button" class="btn" data-close="personMask">取消</button>
+        <button type="button" class="btn btn-primary" id="savePersonBtn">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========= 新增法人客户弹窗 ========= -->
+  <div class="mask" id="corpMask">
+    <div class="modal lg">
+      <div class="m-hd"><span class="t">新增法人客户</span><span class="x" data-close="corpMask">✕</span></div>
+      <div class="m-bd">
+        <div class="form-sec">
+          <div class="f-label"><span class="req">*</span>营业执照 <span class="ai-tag"></span></div>
+          <div class="ocr-row">
+            <div class="ocr-box" id="cLicenseBox" data-upload data-kind="营业执照" data-ph="营业执照"><div class="plus">＋</div><div>营业执照</div></div>
+            <div class="ocr-info">
+              <div class="kv"><span class="k k-wide">公司名称：</span><span class="v wait" id="cCorpName">待识别</span></div>
+              <div class="kv"><span class="k k-wide">统一社会信用代码：</span><span class="v wait" id="cCreditCode">待识别</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="form-sec">
+          <div class="f-label"><span class="req">*</span>法人身份证 <span class="ai-tag"></span></div>
+          <div class="ocr-row">
+            <div class="ocr-box" id="cIdFront" data-upload data-kind="身份证" data-ph="法人身份证人像面"><div class="plus">＋</div><div>法人身份证人像面</div></div>
+            <div class="ocr-box" id="cIdBack" data-upload data-kind="身份证" data-ph="法人身份证国徽面"><div class="plus">＋</div><div>法人身份证国徽面</div></div>
+            <div class="ocr-info">
+              <div class="kv"><span class="k">姓名：</span><span class="v wait" id="cLegalName">待识别</span></div>
+              <div class="kv"><span class="k">身份证：</span><span class="v wait" id="cLegalIdNo">待识别</span></div>
+              <div class="kv"><span class="k">性别：</span><span class="v wait" id="cLegalGender">待识别</span></div>
+              <div class="kv"><span class="k">民族：</span><span class="v wait" id="cLegalNation">待识别</span></div>
+              <div class="kv"><span class="k">住址：</span><span class="v wait" id="cLegalAddr">待识别</span></div>
+              <div class="kv"><span class="k">有效期限：</span><span class="v wait" id="cLegalValid">待识别</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="f-row">
+          <div class="f-item" data-field="cPhone">
+            <div class="f-label"><span class="req">*</span>法人手机号 <span class="ai-tag"></span></div>
+            <input class="f-input" id="cPhone" placeholder="请输入法人手机号"/>
+          </div>
+          <div class="f-item" data-field="cPreLoan">
+            <div class="f-label"><span class="req">*</span>客户预贷款金额（万） <span class="ai-tag"></span></div>
+            <input class="f-input" id="cPreLoan" placeholder="请输入1-10,000整数"/>
+          </div>
+          <div class="f-item" data-field="cEmail">
+            <div class="f-label">联系邮箱 <span class="ai-tag"></span></div>
+            <input class="f-input" id="cEmail" placeholder="请输入邮箱"/>
+          </div>
+        </div>
+      </div>
+      <div class="m-ft">
+        <button type="button" class="btn" id="saveCorpGBtn">保存，同时将法人录为担保方</button>
+        <button type="button" class="btn btn-primary" id="saveCorpBtn">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========= 添加资产弹窗 ========= -->
+  <div class="mask" id="assetMask">
+    <div class="modal xl">
+      <div class="m-hd"><span class="t">添加资产</span><span class="x" data-close="assetMask">✕</span></div>
+      <div class="m-bd">
+        <div class="form-sec">
+          <div class="sec-title">融资情况</div>
+          <div class="sum-row tight">
+            <div class="sum-card"><div class="k">资产总金额</div><div class="v" id="amSale">0.00元</div></div>
+            <div class="sum-card"><div class="k">总贷款金额</div><div class="v red" id="amLoan">0.00元</div></div>
+            <div class="sum-card"><div class="k">首付金额</div><div class="v orange" id="amDown">0.00元</div></div>
+            <div class="sum-card"><div class="k">融资比例</div><div class="v" id="amRatio">0%</div></div>
+          </div>
+        </div>
+        <div class="form-sec">
+          <div class="sec-title">车型</div>
+          <div class="f-row">
+            <div class="f-item">
+              <div class="f-label"><span class="req">*</span>类型-子类型</div>
+              <select class="f-select" id="aType">
+                <option>牵引车-充电牵引车</option>
+                <option>牵引车-燃油牵引车</option>
+                <option>自卸车-充电自卸车</option>
+                <option>搅拌车-充电搅拌车</option>
+                <option>载货车</option>
+              </select>
+            </div>
+            <div class="f-item">
+              <div class="f-label">合格证型号</div>
+              <input class="f-input" id="aCertModel" placeholder="合格证中的资产型号"/>
+            </div>
+          </div>
+          <div class="f-row">
+            <div class="f-item">
+              <div class="f-label">买卖合同型号</div>
+              <input class="f-input" id="aContractModel" placeholder="买卖合同中的资产型号"/>
+            </div>
+            <div class="f-item">
+              <div class="f-label"><span class="req">*</span>资产交易价格（元）</div>
+              <input class="f-input" id="aPrice" placeholder="如：527000"/>
+            </div>
+          </div>
+          <div class="f-row">
+            <div class="f-item">
+              <div class="f-label"><span class="req">*</span>客户贷款金额（元）</div>
+              <input class="f-input" id="aLoan" placeholder="按融资比例自动带出，可修改"/>
+            </div>
+            <div class="f-item"></div>
+          </div>
+        </div>
+        <div class="form-sec">
+          <div class="sec-title">附加品</div>
+          <button type="button" class="btn btn-orange btn-sm" data-toast="添加附加品（演示）">＋ 添加附加品</button>
+        </div>
+        <div class="form-sec">
+          <div class="sec-title">合格证 <span class="ocr-badge">OCR 识别</span></div>
+          <div class="ocr-block">
+            <div class="ocr-box" id="aCertBox" data-upload data-kind="合格证" data-ph="合格证"><div class="plus">＋</div><div>合格证</div></div>
+            <div class="ocr-fields">
+              <div class="f-row">
+                <div class="f-item"><div class="f-label">合格证号码</div><input class="f-input" id="aCertNo" placeholder="请输入合格证号码"/></div>
+                <div class="f-item"><div class="f-label">车架号</div><input class="f-input" id="aVin" placeholder="请输入车架号（VIN）"/></div>
+              </div>
+              <div class="f-row">
+                <div class="f-item"><div class="f-label">发动机号</div><input class="f-input" id="aEngine" placeholder="请输入发动机号"/></div>
+                <div class="f-item"><div class="f-label">整车编码</div><input class="f-input" id="aVehicle" placeholder="请输入整车编码"/></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-sec">
+          <div class="sec-title">发票信息 <span class="ocr-badge">OCR 识别</span></div>
+          <div class="ocr-block">
+            <div class="ocr-box" id="aInvBox" data-upload data-kind="发票" data-ph="发票"><div class="plus">＋</div><div>发票</div></div>
+            <div class="ocr-fields">
+              <div class="f-row">
+                <div class="f-item">
+                  <div class="f-label">发票类型</div>
+                  <select class="f-select" id="aInvType">
+                    <option>电子发票</option>
+                    <option>纸质发票</option>
+                    <option>机动车销售统一发票</option>
+                  </select>
+                </div>
+                <div class="f-item"><div class="f-label">发票抬头</div><input class="f-input" id="aInvTitle" placeholder="请输入发票抬头"/></div>
+              </div>
+              <div class="f-row">
+                <div class="f-item"><div class="f-label">发票编号</div><input class="f-input" id="aInvNo" placeholder="请输入发票编号"/></div>
+                <div class="f-item"><div class="f-label">发票金额（元）</div><input class="f-input" id="aInvAmount" placeholder="请输入发票金额"/></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-sec">
+          <div class="sec-title">保险 <span class="ocr-badge">OCR 识别</span></div>
+          <div class="ocr-block">
+            <div class="ocr-box" id="aInsBox" data-upload data-kind="保单" data-ph="交强险保单"><div class="plus">＋</div><div>交强险保单</div></div>
+            <div class="ocr-fields">
+              <div class="f-row">
+                <div class="f-item">
+                  <div class="f-label"><span class="req">*</span>保险公司</div>
+                  <select class="f-select" id="aInsCo">
+                    <option>中国人保财险</option>
+                    <option>中国平安财险</option>
+                    <option>太平洋财险</option>
+                    <option>国寿财险</option>
+                    <option>大地财险</option>
+                    <option>中华联合财险</option>
+                    <option>阳光财险</option>
+                  </select>
+                </div>
+                <div class="f-item"><div class="f-label"><span class="req">*</span>保单号</div><input class="f-input" id="aPolicyNo" placeholder="请输入保单号"/></div>
+              </div>
+              <div class="f-row">
+                <div class="f-item"><div class="f-label"><span class="req">*</span>保险期限（起）</div><input class="f-input" id="aInsStart" placeholder="YYYY-MM-DD"/></div>
+                <div class="f-item"><div class="f-label"><span class="req">*</span>保险期限（止）</div><input class="f-input" id="aInsEnd" placeholder="YYYY-MM-DD"/></div>
+              </div>
+              <div class="f-row">
+                <div class="f-item"><div class="f-label">保险公司所在地</div><input class="f-input" id="aInsLoc" placeholder="如：湖南长沙"/></div>
+                <div class="f-item"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="m-ft">
+        <button type="button" class="btn" data-close="assetMask">取消</button>
+        <button type="button" class="btn btn-primary" id="assetSaveBtn">保存资产</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========= 成功弹窗 ========= -->
+  <div class="mask" id="okMask">
+    <div class="modal ok-modal">
+      <div class="ok-icon">✓</div>
+      <div class="ok-title" id="okTitle">已保存</div>
+      <div class="ok-kv" id="okBody"></div>
+      <button type="button" class="btn btn-primary btn-block" data-close="okMask">知道了</button>
+    </div>
+  </div>
+
+  <!-- ========= AI 助手 ========= -->
+  <button type="button" class="ai-fab" id="aiFab">🤖 AI 录单助手</button>
+  <aside class="ai-drawer" id="aiDrawer" aria-label="AI 录单助手">
+    <div class="ai-resize" id="aiResize" title="拖拽调整高度"></div>
+    <div class="ai-hd">
+      <div>
+        <div class="t">🤖 AI 录单助手</div>
+        <div class="sub">客户信息 / 融资需求 / 附件丢给我，自动解析填充并保存</div>
+      </div>
+      <span class="x" id="aiClose">✕</span>
+    </div>
+    <div class="ai-body" id="chatBody">
+      <div class="msg ai">
+        <div class="bubble">我是 AI 录单助手。你可以：<br/>① 粘贴客户信息+融资需求的文字描述<br/>② 上传身份证、营业执照、合同等附件图片<br/>我会自动解析，并支持<b>分别填充到「录客户」和「录订单」</b>。<br/><span class="chat-note">⚠️ 演示环境，请勿粘贴真实客户敏感信息</span></div>
+      </div>
+    </div>
+    <div class="ai-ft">
+      <div class="file-tags" id="fileTags"></div>
+      <div class="ai-quick">
+        <button type="button" class="btn" id="demoFillBtn">📋 填入示例</button>
+        <button type="button" class="btn" id="attBtn">📎 添加附件</button>
+        <input type="file" id="attInput" class="visually-hidden" multiple accept="image/*,.pdf"/>
+        <input type="file" id="boxFileInput" class="visually-hidden" accept="image/*,.pdf"/>
+      </div>
+      <div class="chat-input-row">
+        <textarea id="chatInput" placeholder="粘贴客户信息、融资需求…"></textarea>
+        <div class="chat-btns">
+          <button type="button" class="btn btn-primary" id="parseBtn">AI 智能解析</button>
+          <button type="button" class="btn" id="newSessBtn" title="清空对话上下文，开始新的一单">🧹 新会话</button>
+          <button type="button" class="btn" id="cfgBtn">⚙ 接口</button>
+        </div>
+      </div>
+      <div class="cfg-panel hidden" id="cfgPanel">
+        <div>大模型接口（OpenAI 兼容，留空则本地规则解析）：</div>
+        <input id="cfgBase" placeholder="API 地址，如 https://api.deepseek.com/v1"/>
+        <input id="cfgKey" placeholder="API Key" type="password"/>
+        <div class="cfg-models">
+          <span class="chat-tip">百炼常用模型，点击填入：</span>
+          <button type="button" class="btn btn-sm" data-m="qwen3.7-plus">qwen3.7-plus(图文)</button>
+          <button type="button" class="btn btn-sm" data-m="qwen3.8-max">qwen3.8-max(图文)</button>
+          <button type="button" class="btn btn-sm" data-m="qwen3.8-flash">qwen3.8-flash(纯文本)</button>
+          <div class="cfg-model-note">注意：qwen-vl-plus / qwen-vl-max / qwen-plus 等老型号已下线，会报 model_not_found</div>
+        </div>
+        <div class="cfg-row">
+          <div><input id="cfgModel" placeholder="模型名，如 deepseek-chat"/></div>
+          <div class="cfg-vision"><input type="checkbox" id="cfgVision"/>识别图片</div>
+        </div>
+        <div class="cfg-actions">
+          <button type="button" class="btn btn-sm" id="cfgTestBtn">测试连接</button>
+          <span class="cfg-msg" id="cfgTestMsg"></span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div id="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
