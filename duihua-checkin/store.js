@@ -3,6 +3,7 @@
   const PIN = "1234";
   const CANCEL_SEC = 600;
   const DAILY_LIMIT = 3;
+  const INTERVAL_MS = 3 * 60 * 60 * 1000;
   const COURSES = ["国画", "油画", "素描", "速写", "书法", "其他"];
   const TEACHERS = ["李茹", "杨彩霞"];
   const SEED = {
@@ -61,17 +62,64 @@
   function validOnDate(db, sid, day) {
     return db.checkins.filter((c) => c.studentId === sid && c.date === day && c.status === "valid");
   }
-  function canCheckin(db, sid, day) {
+  function submitAt(c) {
+    if (c.createdAt) {
+      const ms = Date.parse(c.createdAt);
+      if (Number.isFinite(ms)) return ms;
+    }
+    if (c.at) {
+      const ms = Date.parse(c.at);
+      if (Number.isFinite(ms)) return ms;
+    }
+    if (c.date && c.time) {
+      const tm = c.time.length === 5 ? c.time + ":00" : c.time;
+      const ms = Date.parse(`${c.date}T${tm}+08:00`);
+      if (Number.isFinite(ms)) return ms;
+    }
+    return null;
+  }
+  function lastValidSubmit(db, sid) {
+    const times = db.checkins
+      .filter((c) => c.studentId === sid && c.status === "valid")
+      .map(submitAt)
+      .filter((ms) => ms != null);
+    return times.length ? Math.max(...times) : null;
+  }
+  function fmtNext(ms, refMs) {
+    const parts = (value) => {
+      const s = new Date(value).toLocaleString("sv-SE", { timeZone: "Asia/Shanghai" });
+      return { date: s.slice(0, 10), hm: s.slice(11, 16) };
+    };
+    const a = parts(ms);
+    const b = parts(refMs);
+    if (a.date === b.date) return `今天 ${a.hm}`;
+    const next = new Date(refMs);
+    next.setTime(refMs + 24 * 60 * 60 * 1000);
+    const n = parts(next.getTime());
+    // compare calendar dates in Beijing via parts of ref+1 day is messy if DST N/A in Shanghai
+    const [ry, rm, rd] = b.date.split("-").map(Number);
+    const tomorrow = new Date(Date.UTC(ry, rm - 1, rd + 1));
+    const td = tomorrow.toISOString().slice(0, 10);
+    if (a.date === td) return `明天 ${a.hm}`;
+    const [, m, d] = a.date.split("-");
+    return `${Number(m)}月${Number(d)}日 ${a.hm}`;
+  }
+  function intervalError(db, sid, submittedMs) {
+    const last = lastValidSubmit(db, sid);
+    if (last == null || submittedMs - last >= INTERVAL_MS) return null;
+    return `距上次有效打卡不足 3 小时，最早可再打 ${fmtNext(last + INTERVAL_MS, submittedMs)}。`;
+  }
+  function canCheckin(db, sid, day, submittedMs) {
     const s = studentById(db, sid);
     if (!s) return "未找到学员档案，请联系老师开通。";
     if (s.remaining <= 0) return "剩余课时不足，请联系老师加课时后再打卡。";
     if (validOnDate(db, sid, day).length >= DAILY_LIMIT) return `当天有效打卡已满 ${DAILY_LIMIT} 次。`;
-    return null;
+    return intervalError(db, sid, submittedMs);
   }
   function addCheckin(db, { studentId, course, teacher, typ, whenDate, whenTime, whenIso, location }) {
     if (!COURSES.includes(course)) return [null, "请选择课程。"];
     if (!TEACHERS.includes(teacher)) return [null, "请选择授课老师。"];
-    const err = canCheckin(db, studentId, whenDate);
+    const err = canCheckin(db, studentId, whenDate, nowParts().ms);
     if (err) return [null, err];
     const s = studentById(db, studentId);
     s.remaining -= 1;
@@ -185,7 +233,7 @@
     const db = load();
 
     if (method === "GET" && pathname === "/api/meta") {
-      return { ok: true, courses: COURSES, teachers: TEACHERS, dailyLimit: DAILY_LIMIT, cancelMinutes: 10, today: nowParts().date };
+      return { ok: true, courses: COURSES, teachers: TEACHERS, dailyLimit: DAILY_LIMIT, intervalHours: 3, cancelMinutes: 10, today: nowParts().date };
     }
     if (method === "GET" && pathname === "/api/roster") {
       return { ok: true, names: [...new Set(db.students.map((s) => s.name))].sort((a, b) => a.localeCompare(b, "zh")) };
@@ -194,7 +242,18 @@
       const sess = requireStudent(db, token);
       const s = studentById(db, sess.studentId);
       if (!s) throw fail("档案不存在。", 404);
-      return { ok: true, student: publicStudent(s), todayValid: validOnDate(db, s.id, nowParts().date).length, today: nowParts().date };
+      const now = nowParts();
+      const ie = intervalError(db, s.id, now.ms);
+      const last = lastValidSubmit(db, s.id);
+      const nxt = ie && last != null ? last + INTERVAL_MS : null;
+      return {
+        ok: true,
+        student: publicStudent(s),
+        todayValid: validOnDate(db, s.id, now.date).length,
+        today: now.date,
+        intervalError: ie,
+        nextCheckinAt: nxt != null ? new Date(nxt).toLocaleString("sv-SE", { timeZone: "Asia/Shanghai" }).replace(" ", "T") + "+08:00" : null,
+      };
     }
     if (method === "GET" && pathname === "/api/checkins") {
       const sess = getSess(db, token);
