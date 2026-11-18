@@ -65,6 +65,47 @@
     const tm = fmtTime(time);
     return tm ? `${d} ${tm}` : d;
   }
+  function submitAtMs(c) {
+    if (c && c.createdAt) {
+      const ms = Date.parse(c.createdAt);
+      if (Number.isFinite(ms)) return ms;
+    }
+    if (c && c.at) {
+      const ms = Date.parse(c.at);
+      if (Number.isFinite(ms)) return ms;
+    }
+    if (c && c.date && c.time) {
+      const tm = String(c.time).length === 5 ? c.time + ":00" : c.time;
+      const ms = Date.parse(`${c.date}T${tm}+08:00`);
+      if (Number.isFinite(ms)) return ms;
+    }
+    return null;
+  }
+  function nowBjMs() {
+    const s = new Date().toLocaleString("sv-SE", { timeZone: "Asia/Shanghai" });
+    return Date.parse(s.replace(" ", "T") + "+08:00");
+  }
+  function fmtNextLabel(ms, refMs) {
+    const parts = (value) => {
+      const s = new Date(value).toLocaleString("sv-SE", { timeZone: "Asia/Shanghai" });
+      return { date: s.slice(0, 10), hm: s.slice(11, 16) };
+    };
+    const a = parts(ms);
+    const b = parts(refMs);
+    if (a.date === b.date) return `今天 ${a.hm}`;
+    const [ry, rm, rd] = b.date.split("-").map(Number);
+    const tomorrow = new Date(Date.UTC(ry, rm - 1, rd + 1)).toISOString().slice(0, 10);
+    if (a.date === tomorrow) return `明天 ${a.hm}`;
+    return `${Number(a.date.slice(5, 7))}月${Number(a.date.slice(8, 10))}日 ${a.hm}`;
+  }
+  function intervalErrorFromList(checkins, submittedMs) {
+    const interval = (meta.intervalHours || 3) * 60 * 60 * 1000;
+    const times = (checkins || []).filter((c) => c.status === "valid").map(submitAtMs).filter((ms) => ms != null);
+    if (!times.length) return "";
+    const last = Math.max(...times);
+    if (submittedMs - last >= interval) return "";
+    return `距上次有效打卡不足 3 小时，最早可再打 ${fmtNextLabel(last + interval, submittedMs)}。`;
+  }
   function seal(cls = "", text = "对画") {
     if (text.length === 2) {
       return `<div class="seal ${cls}"><span>${escapeHtml(text[0])}</span><span>${escapeHtml(text[1])}</span></div>`;
@@ -174,6 +215,7 @@
     const me = await api("/api/me");
     ui.student = me.student;
     ui.todayValid = me.todayValid;
+    ui.intervalError = me.intervalError || "";
     meta.today = me.today;
     const rec = await api("/api/checkins");
     ui.checkins = rec.checkins;
@@ -261,13 +303,14 @@
     const s = ui.student || {};
     const used = ui.todayValid || 0;
     const limit = meta.dailyLimit || 3;
+    const intervalBlocked = ui.intervalError || "";
     const blocked = s.remaining <= 0
       ? "剩余课时不足，请联系老师加课时后再打卡。"
       : used >= limit
         ? `当天有效打卡已满 ${limit} 次。`
-        : "";
-    const ready = s.remaining > 0 && used < limit && ui.course && ui.teacher;
-    const needPick = s.remaining > 0 && used < limit && (!ui.course || !ui.teacher);
+        : intervalBlocked;
+    const ready = s.remaining > 0 && used < limit && !intervalBlocked && ui.course && ui.teacher;
+    const needPick = s.remaining > 0 && used < limit && !intervalBlocked && (!ui.course || !ui.teacher);
     const dots = Array.from({ length: limit }, (_, i) => `<i class="${i < used ? "on" : ""}"></i>`).join("");
     return `<div class="screen has-nav">
       <div class="topbar">${seal()}
@@ -458,7 +501,7 @@
 
   function makeupBlock() {
     const s = ui.detail || {};
-    const when = ui.form.when || "";
+    const when = ui.form.when || (meta.today ? meta.today + "T10:00" : "");
     const day = when.slice(0, 10);
     const today = meta.today || "";
     if (s.remaining <= 0) return { text: "剩余课时不足，请联系老师加课时后再打卡。", disable: true };
@@ -468,6 +511,8 @@
       const limit = meta.dailyLimit || 3;
       if (used >= limit) return { text: `当天有效打卡已满 ${limit} 次。`, disable: true };
     }
+    const text = intervalErrorFromList(ui.checkins, nowBjMs());
+    if (text) return { text, disable: true };
     return { text: "", disable: false };
   }
   function teacherMakeupView() {
@@ -478,7 +523,7 @@
     const remainClass = s.remaining <= 0 ? "emph" : "";
     return `<div class="screen">${backBar("t-detail", "补打卡")}
       <div class="card stack">
-        <p>${escapeHtml(s.name || "")} 当前剩余 <b class="${remainClass}">${s.remaining}</b> 次。补卡扣 1 次，地点记为「补打卡」，计入所补日期的 3 次上限，不能补未来日期。</p>
+        <p>${escapeHtml(s.name || "")} 当前剩余 <b class="${remainClass}">${s.remaining}</b> 次。补卡扣 1 次，地点记为「补打卡」，计入所补日期的 3 次上限，不能补未来日期，须距上次有效打卡提交满 3 小时。</p>
         <div class="field-label">课程</div>
         ${choicePills("course", meta.courses, 3)}
         <div class="field-label">授课老师</div>
