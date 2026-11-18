@@ -109,17 +109,18 @@
     if (last == null || submittedMs - last >= INTERVAL_MS) return null;
     return `距上次有效打卡不足 3 小时，最早可再打 ${fmtNext(last + INTERVAL_MS, submittedMs)}。`;
   }
-  function canCheckin(db, sid, day, submittedMs) {
+  function canCheckin(db, sid, day, submittedMs, checkInterval = true) {
     const s = studentById(db, sid);
     if (!s) return "未找到学员档案，请联系老师开通。";
     if (s.remaining <= 0) return "剩余课时不足，请联系老师加课时后再打卡。";
     if (validOnDate(db, sid, day).length >= DAILY_LIMIT) return `当天有效打卡已满 ${DAILY_LIMIT} 次。`;
+    if (!checkInterval) return null;
     return intervalError(db, sid, submittedMs);
   }
-  function addCheckin(db, { studentId, course, teacher, typ, whenDate, whenTime, whenIso, location }) {
+  function addCheckin(db, { studentId, course, teacher, typ, whenDate, whenTime, whenIso, location, checkInterval = true }) {
     if (!COURSES.includes(course)) return [null, "请选择课程。"];
     if (!TEACHERS.includes(teacher)) return [null, "请选择授课老师。"];
-    const err = canCheckin(db, studentId, whenDate, nowParts().ms);
+    const err = canCheckin(db, studentId, whenDate, nowParts().ms, checkInterval);
     if (err) return [null, err];
     const s = studentById(db, studentId);
     s.remaining -= 1;
@@ -401,6 +402,7 @@
         whenTime: when.time,
         whenIso: when.iso,
         location: "补打卡",
+        checkInterval: false,
       });
       if (e) throw fail(e);
       save(db);

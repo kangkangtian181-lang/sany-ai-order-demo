@@ -156,7 +156,7 @@ def interval_error(db, sid, submitted: datetime):
     return f"距上次有效打卡不足 3 小时，最早可再打 {fmt_next(nxt, submitted)}。"
 
 
-def can_checkin(db, sid, when: datetime, submitted: datetime | None = None):
+def can_checkin(db, sid, when: datetime, submitted: datetime | None = None, check_interval: bool = True):
     s = student_by_id(db, sid)
     if not s:
         return "未找到学员档案，请联系老师开通。"
@@ -164,16 +164,18 @@ def can_checkin(db, sid, when: datetime, submitted: datetime | None = None):
         return "剩余课时不足，请联系老师加课时后再打卡。"
     if len(valid_on_date(db, sid, date_str(when))) >= DAILY_LIMIT:
         return f"当天有效打卡已满 {DAILY_LIMIT} 次。"
+    if not check_interval:
+        return None
     return interval_error(db, sid, submitted or now_bj())
 
 
-def add_checkin(db, *, student_id, course, teacher, typ, when: datetime, location: str):
+def add_checkin(db, *, student_id, course, teacher, typ, when: datetime, location: str, check_interval: bool = True):
     if course not in COURSES:
         return None, "请选择课程。"
     if teacher not in TEACHERS:
         return None, "请选择授课老师。"
     day = date_str(when)
-    err = can_checkin(db, student_id, when, now_bj())
+    err = can_checkin(db, student_id, when, now_bj(), check_interval=check_interval)
     if err:
         return None, err
     s = student_by_id(db, student_id)
@@ -596,6 +598,7 @@ class Handler(SimpleHTTPRequestHandler):
             typ="makeup",
             when=when,
             location="补打卡",
+            check_interval=False,
         )
         if e:
             return json_err(self, e)

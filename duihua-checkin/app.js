@@ -511,8 +511,6 @@
       const limit = meta.dailyLimit || 3;
       if (used >= limit) return { text: `当天有效打卡已满 ${limit} 次。`, disable: true };
     }
-    const text = intervalErrorFromList(ui.checkins, nowBjMs());
-    if (text) return { text, disable: true };
     return { text: "", disable: false };
   }
   function teacherMakeupView() {
@@ -523,7 +521,7 @@
     const remainClass = s.remaining <= 0 ? "emph" : "";
     return `<div class="screen">${backBar("t-detail", "补打卡")}
       <div class="card stack">
-        <p>${escapeHtml(s.name || "")} 当前剩余 <b class="${remainClass}">${s.remaining}</b> 次。补卡扣 1 次，地点记为「补打卡」，计入所补日期的 3 次上限，不能补未来日期，须距上次有效打卡提交满 3 小时。</p>
+        <p>${escapeHtml(s.name || "")} 当前剩余 <b class="${remainClass}">${s.remaining}</b> 次。补卡扣 1 次，地点记为「补打卡」，计入所补日期的 3 次上限，不能补未来日期。</p>
         <div class="field-label">课程</div>
         ${choicePills("course", meta.courses, 3)}
         <div class="field-label">授课老师</div>
