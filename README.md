@@ -6,7 +6,7 @@
 
 GitHub Pages：https://kangkangtian181-lang.github.io/sany-ai-order-demo/
 
-《产业金融-设计规范》手册：[/ued-spec/](https://kangkangtian181-lang.github.io/sany-ai-order-demo/ued-spec/)
+《产业金融-设计规范》手册（含组件库）：[/ued-spec/](https://kangkangtian181-lang.github.io/sany-ai-order-demo/ued-spec/)
 
 ## 如何打开
 
